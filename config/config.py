@@ -3,31 +3,28 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# ── Обязательные ──────────────────────────────────────────────────────────────
 BOT_TOKEN: str = os.getenv("BOT_TOKEN", "")
 OWNER_ID: int = int(os.getenv("OWNER_ID", "0"))
-SUPPORT_GROUP_ID: int = int(os.getenv("SUPPORT_GROUP_ID", "0"))
-DATABASE_PATH: str = os.getenv("DATABASE_PATH", "bot.db")
-LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
 GEMINI_KEY: str = os.getenv("GEMINI_KEY", "")
 
-# ── Имя владельца бота (используется в системном промпте) ──────────────────
-OWNER_NAME: str = os.getenv("OWNER_NAME", "Владелец")
-BUSINESS_NAME: str = os.getenv("BUSINESS_NAME", "Наша компания")
-BUSINESS_DESCRIPTION: str = os.getenv(
-    "BUSINESS_DESCRIPTION",
-    "Мы занимаемся продажей товаров и услуг высокого качества."
-)
+# ── О себе (основа системного промпта) ────────────────────────────────────────
+MY_NAME: str = os.getenv("MY_NAME", "Владелец")
+MY_ABOUT: str = os.getenv("MY_ABOUT", "")
+MY_STYLE: str = os.getenv("MY_STYLE", "Общаюсь неформально и коротко.")
+MY_LIMITS: str = os.getenv("MY_LIMITS", "")
+MY_DEFER_PHRASE: str = os.getenv("MY_DEFER_PHRASE", "Напишу позже, сейчас занят")
 
-# ── Язык ответов ИИ ────────────────────────────────────────────────────────
+# ── ИИ ────────────────────────────────────────────────────────────────────────
 AI_LANGUAGE: str = os.getenv("AI_LANGUAGE", "ru")
+AI_HISTORY_DEPTH: int = int(os.getenv("AI_HISTORY_DEPTH", "15"))
+SESSION_TIMEOUT: int = int(os.getenv("SESSION_TIMEOUT", "7200"))
 
-# ── Макс. сообщений истории, которые мы шлём Gemini ──────────────────────
-AI_HISTORY_DEPTH: int = int(os.getenv("AI_HISTORY_DEPTH", "10"))
-
-# ── Порог «долгой паузы» (в секундах) для сброса контекста ───────────────
-SESSION_TIMEOUT: int = int(os.getenv("SESSION_TIMEOUT", "3600"))
+# ── Технические ───────────────────────────────────────────────────────────────
+DATABASE_PATH: str = os.getenv("DATABASE_PATH", "personal.db")
+LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
 
 if not BOT_TOKEN:
-    raise ValueError("BOT_TOKEN is not set in .env file")
+    raise ValueError("BOT_TOKEN не задан в .env")
 if not OWNER_ID:
-    raise ValueError("OWNER_ID is not set in .env file")
+    raise ValueError("OWNER_ID не задан в .env")

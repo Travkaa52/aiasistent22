@@ -1,0 +1,42 @@
+name: Telegram Bot
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create .env file from secrets
+        run: |
+          echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> .env
+          echo "OWNER_ID=${{ secrets.OWNER_ID }}" >> .env
+          echo "SUPPORT_GROUP_ID=${{ secrets.SUPPORT_GROUP_ID }}" >> .env
+          echo "DATABASE_PATH=bot.db" >> .env
+          echo "LOG_LEVEL=INFO" >> .env
+
+      - name: Run bot
+        run: python bot.py
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          OWNER_ID: ${{ secrets.OWNER_ID }}
+          SUPPORT_GROUP_ID: ${{ secrets.SUPPORT_GROUP_ID }}
+          DATABASE_PATH: bot.db
+          LOG_LEVEL: INFO

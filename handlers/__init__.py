@@ -1,1 +1,1 @@
-from . import admin, users, support
+from .auth import OwnerOnlyMiddleware
